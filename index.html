@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sustainability ML Practicals — Beginner GitHub Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0f0d;
+    --surface: #111814;
+    --surface2: #161f1a;
+    --border: #1e2e25;
+    --green: #3dffa0;
+    --green-dim: #1a8050;
+    --green-glow: rgba(61,255,160,0.12);
+    --amber: #ffce3d;
+    --amber-dim: #9a7a00;
+    --coral: #ff6b6b;
+    --blue: #5bc4ff;
+    --purple: #c084fc;
+    --text: #e8f0eb;
+    --text-dim: #7a9485;
+    --text-muted: #3d5045;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(61,255,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,255,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: var(--green-glow);
+    border: 1px solid var(--green-dim);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text);
+    max-width: 780px;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .subtitle {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meta-pill span { color: var(--green); }
+
+  /* ── PHILOSOPHY BOX ── */
+  .philosophy {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--green);
+    padding: 24px 28px;
+    margin-bottom: 48px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .philosophy h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
+
+  .philosophy p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .philosophy strong { color: var(--text); }
+
+  /* ── NAVIGATION TABS ── */
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    background: var(--surface);
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .tab-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--green);
+    background: var(--green-glow);
+  }
+
+  .tab-btn.active {
+    color: var(--bg);
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .tab-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .tab-btn.active .tab-num {
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* ── PRACTICAL CARDS ── */
+  .practical { display: none; }
+  .practical.active { display: block; }
+
+  .practical-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 28px;
+  }
+
+  .practical-title {
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .practical-title em {
+    font-style: normal;
+    display: block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .difficulty-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  .diff-beginner { color: var(--green); background: var(--green-glow); border: 1px solid var(--green-dim); }
+  .diff-intermediate { color: var(--amber); background: rgba(255,206,61,0.1); border: 1px solid var(--amber-dim); }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .practical-header { grid-template-columns: 1fr; }
+  }
+
+  /* Info blocks */
+  .info-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 18px 20px;
+  }
+
+  .info-block.full { grid-column: 1 / -1; }
+
+  .info-block h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .info-block.accent-green { border-top: 2px solid var(--green); }
+  .info-block.accent-amber { border-top: 2px solid var(--amber); }
+  .info-block.accent-blue  { border-top: 2px solid var(--blue); }
+  .info-block.accent-coral { border-top: 2px solid var(--coral); }
+  .info-block.accent-purple { border-top: 2px solid var(--purple); }
+
+  /* Repo link */
+  .repo-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .repo-link:hover {
+    border-color: var(--green-dim);
+    background: var(--green-glow);
+  }
+
+  .repo-link:hover .repo-url { color: var(--green); }
+
+  .repo-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .repo-info { flex: 1; min-width: 0; }
+
+  .repo-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .repo-url {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.15s;
+  }
+
+  .repo-stars {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  /* Tech pills */
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .tech-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .tech-pill.main {
+    color: var(--green);
+    border-color: var(--green-dim);
+    background: var(--green-glow);
+  }
+
+  /* Steps */
+  .steps { list-style: none; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    background: var(--green-glow);
+    border: 1px solid var(--green-dim);
+    border-radius: 50%;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .steps li strong { color: var(--text); }
+
+  /* Code block */
+  .code-block {
+    background: #0c140f;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.8;
+    color: #a8d8b8;
+    overflow-x: auto;
+    margin-top: 6px;
+  }
+
+  .code-block .comment { color: var(--text-muted); }
+  .code-block .keyword { color: var(--purple); }
+  .code-block .string { color: var(--amber); }
+  .code-block .func { color: var(--blue); }
+  .code-block .num { color: var(--coral); }
+
+  /* Caution/tip boxes */
+  .callout {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  .callout.tip { background: var(--green-glow); border: 1px solid var(--green-dim); color: var(--text-dim); }
+  .callout.warn { background: rgba(255,206,61,0.07); border: 1px solid var(--amber-dim); color: var(--text-dim); }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout strong { color: var(--text); }
+
+  /* Dataset link */
+  .dataset-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(91,196,255,0.3);
+    padding-bottom: 1px;
+    cursor: pointer;
+  }
+
+  .dataset-link:hover { color: var(--green); border-color: var(--green); }
+
+  /* Learning outcomes */
+  .outcomes { list-style: none; }
+  .outcomes li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .outcomes li::before {
+    content: '▸';
+    color: var(--green);
+    flex-shrink: 0;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  /* ── OVERVIEW TABLE ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 800px) {
+    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .overview-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .overview-card:hover, .overview-card.active {
+    border-color: var(--green-dim);
+    background: var(--green-glow);
+  }
+
+  .overview-card:hover .ov-num, .overview-card.active .ov-num { color: var(--green); }
+
+  .ov-icon { font-size: 28px; margin-bottom: 8px; }
+
+  .ov-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+
+  .ov-label {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 4px;
+    color: var(--text);
+  }
+
+  .ov-hrs {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  footer p span { color: var(--green-dim); }
+
+  /* Animate in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .practical.active { animation: fadeUp 0.2s ease-out; }
+
+  /* Copy button */
+  .copy-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 2px;
+    cursor: pointer;
+    float: right;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+  }
+
+  .copy-btn:hover { color: var(--green); border-color: var(--green-dim); }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="tag">SP SCLS · PACE CET Course · Instrumentation, Automation & AI for Sustainability</div>
+    <h1>Python ML Practicals for<br><em>Sustainability Science</em></h1>
+    <p class="subtitle">A curated guide to beginner-friendly GitHub repositories and Jupyter notebooks — one practical per sustainability domain, selected for non-coders with clear datasets and minimal setup.</p>
+    <div class="header-meta">
+      <div class="meta-pill">📚 <span>5</span> practicals curated</div>
+      <div class="meta-pill">⏱ <span>2–2.5 hrs</span> per session</div>
+      <div class="meta-pill">🔧 <span>Google Colab</span> ready — no local install</div>
+      <div class="meta-pill">📊 <span>pandas + scikit-learn</span> core stack</div>
+    </div>
+  </header>
+
+  <!-- PHILOSOPHY -->
+  <div class="philosophy">
+    <h3>Design philosophy for non-coders</h3>
+    <p>Each practical is chosen because it uses <strong>pre-cleaned, small datasets</strong> that load with one line, relies on <strong>scikit-learn's simple fit/predict API</strong>, and produces <strong>visible, interpretable output</strong> (charts, confusion matrices, route maps) within ~30 minutes of starting. No environment setup — all run in <strong>Google Colab (free)</strong>. The trainer writes the boilerplate; students change parameters and interpret results.</p>
+  </div>
+
+  <!-- OVERVIEW CARDS -->
+  <div class="overview-grid" id="overviewGrid">
+    <div class="overview-card active" onclick="switchTab(0)" id="ov0">
+      <div class="ov-icon">🌡️</div>
+      <div class="ov-num">Practical 1</div>
+      <div class="ov-label">CO₂ / Weather Time Series</div>
+      <div class="ov-hrs">~2 hrs · Linear Reg + ARIMA</div>
+    </div>
+    <div class="overview-card" onclick="switchTab(1)" id="ov1">
+      <div class="ov-icon">⚙️</div>
+      <div class="ov-num">Practical 2</div>
+      <div class="ov-label">Machine Downtime Prediction</div>
+      <div class="ov-hrs">~2 hrs · Random Forest</div>
+    </div>
+    <div class="overview-card" onclick="switchTab(2)" id="ov2">
+      <div class="ov-icon">🏢</div>
+      <div class="ov-num">Practical 3</div>
+      <div class="ov-label">Company ESG Ranking</div>
+      <div class="ov-hrs">~2 hrs · Regression + Ranking</div>
+    </div>
+    <div class="overview-card" onclick="switchTab(3)" id="ov3">
+      <div class="ov-icon">🚚</div>
+      <div class="ov-num">Practical 4</div>
+      <div class="ov-label">Logistics Carbon Optimisation</div>
+      <div class="ov-hrs">~2.5 hrs · K-Means + OR-Tools</div>
+    </div>
+    <div class="overview-card" onclick="switchTab(4)" id="ov4">
+      <div class="ov-icon">♻️</div>
+      <div class="ov-num">Practical 5</div>
+      <div class="ov-label">Waste Sorting (Image ML)</div>
+      <div class="ov-hrs">~2.5 hrs · CNN / Transfer Learning</div>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab(0)"><span class="tab-num">1</span> CO₂ Forecasting</button>
+    <button class="tab-btn" onclick="switchTab(1)"><span class="tab-num">2</span> Machine Downtime</button>
+    <button class="tab-btn" onclick="switchTab(2)"><span class="tab-num">3</span> ESG Ranking</button>
+    <button class="tab-btn" onclick="switchTab(3)"><span class="tab-num">4</span> Logistics Optimisation</button>
+    <button class="tab-btn" onclick="switchTab(4)"><span class="tab-num">5</span> Waste Sorting</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PRACTICAL 1: CO2 TIME SERIES
+  ══════════════════════════════════════════════ -->
+  <div class="practical active" id="p0">
+    <div class="practical-header">
+      <div>
+        <div class="practical-title">
+          <em>Practical 1 · Time Series Forecasting</em>
+          🌡️ Predicting CO₂ Emissions & Weather Trends
+        </div>
+        <div class="tech-list">
+          <span class="tech-pill main">pandas</span>
+          <span class="tech-pill main">scikit-learn</span>
+          <span class="tech-pill main">statsmodels</span>
+          <span class="tech-pill">matplotlib</span>
+          <span class="tech-pill">Google Colab</span>
+        </div>
+      </div>
+      <span class="difficulty-badge diff-beginner">⬤ Beginner-Friendly</span>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-green">
+        <h4>🧭 The Big Picture</h4>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6">Students load historical CO₂ concentration data (Mauna Loa dataset — a real, famous time series used by IPCC), visualise the upward trend and seasonal cycle, then build a <strong style="color:var(--text)">linear regression model</strong> to project future levels. Optionally extend to a simple ARIMA model. The key insight: machines can spot the trend and seasonality that human eyes see, and quantify it.</p>
+        <div class="callout tip" style="margin-top:12px">
+          <span class="callout-icon">💡</span>
+          <div>Singapore adaptation: swap to Singapore NEA climate data (monthly temperature 1929–present) — freely downloadable from <strong>data.gov.sg</strong></div>
+        </div>
+      </div>
+      <div class="info-block accent-green">
+        <h4>📦 Recommended GitHub Repos</h4>
+        <a class="repo-link" href="https://github.com/alokthakur93/Forecasting-CO2-emission" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">alokthakur93 / Forecasting-CO2-emission</div>
+            <div class="repo-url">github.com/alokthakur93/Forecasting-CO2-emission</div>
+          </div>
+          <span class="repo-stars">★ ARIMA · GapMinder</span>
+        </a>
+        <a class="repo-link" href="https://github.com/alairdata/CO2-Emissions-Prediction-Model" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">alairdata / CO2-Emissions-Prediction-Model</div>
+            <div class="repo-url">github.com/alairdata/CO2-Emissions-Prediction-Model</div>
+          </div>
+          <span class="repo-stars">★ Linear Reg · Clean</span>
+        </a>
+        <a class="repo-link" href="https://github.com/jiwidi/time-series-forecasting-with-python" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">jiwidi / time-series-forecasting-with-python</div>
+            <div class="repo-url">github.com/jiwidi/time-series-forecasting-with-python</div>
+          </div>
+          <span class="repo-stars">★ Beijing Air · Beginner</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-green">
+        <h4>📋 Step-by-Step Plan (2 hrs)</h4>
+        <ol class="steps">
+          <li><strong>Trainer sets up (10 min):</strong> Open Colab, paste 3-line dataset load from statsmodels built-in CO₂ data — no download needed</li>
+          <li><strong>Explore data (20 min):</strong> Plot the time series. Ask: "What do you notice?" — upward trend, seasonal wiggles. Use <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">seasonal_decompose()</code> to split trend / season / residual</li>
+          <li><strong>Build Linear Regression (30 min):</strong> Create a "month number" feature, fit <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">LinearRegression()</code>, plot prediction vs actual</li>
+          <li><strong>Evaluate (15 min):</strong> Compute RMSE. Discuss: why does the linear model miss the seasonal dips? Introduce the concept of residuals</li>
+          <li><strong>Optional: ARIMA (25 min):</strong> Use <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">statsmodels SARIMA</code> with pre-set parameters — students just change forecast horizon</li>
+          <li><strong>Discuss & relate to SG (20 min):</strong> What would this tell a carbon manager? Link to ISO 14064 reporting timeline projections</li>
+        </ol>
+      </div>
+      <div class="info-block accent-green">
+        <h4>💻 Starter Code Skeleton</h4>
+        <div class="code-block">
+<span class="comment"># STEP 1: Load data (no download needed)</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">from</span> statsmodels.datasets <span class="keyword">import</span> co2
+df = co2.<span class="func">load_pandas</span>().data
+df = df.<span class="func">ffill</span>()  <span class="comment"># fill any gaps</span>
+
+<span class="comment"># STEP 2: Plot</span>
+df.<span class="func">plot</span>(figsize=(<span class="num">12</span>,<span class="num">4</span>), title=<span class="string">"Mauna Loa CO₂ ppm"</span>)
+
+<span class="comment"># STEP 3: Decompose</span>
+<span class="keyword">from</span> statsmodels.tsa.seasonal <span class="keyword">import</span> seasonal_decompose
+result = <span class="func">seasonal_decompose</span>(df[<span class="string">'co2'</span>], period=<span class="num">52</span>)
+result.<span class="func">plot</span>()
+
+<span class="comment"># STEP 4: Simple Linear Regression</span>
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression
+df[<span class="string">'t'</span>] = <span class="func">range</span>(<span class="func">len</span>(df))
+model = <span class="func">LinearRegression</span>().<span class="func">fit</span>(df[[<span class="string">'t'</span>]], df[<span class="string">'co2'</span>])
+df[<span class="string">'predicted'</span>] = model.<span class="func">predict</span>(df[[<span class="string">'t'</span>]])
+df[[<span class="string">'co2'</span>,<span class="string">'predicted'</span>]].<span class="func">plot</span>()
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block full accent-green">
+      <h4>🎯 Learning Outcomes</h4>
+      <ul class="outcomes">
+        <li>Load and plot a real-world environmental time series using pandas</li>
+        <li>Identify and interpret trend, seasonality, and residuals using seasonal decomposition</li>
+        <li>Build and evaluate a linear regression forecast using scikit-learn</li>
+        <li>Relate ML model output to carbon management and regulatory reporting context (ISO 14064, Singapore Green Plan 2030)</li>
+      </ul>
+      <hr class="section-divider">
+      <h4>📊 Datasets (All Free)</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+        <a class="dataset-link" href="https://www.statsmodels.org/stable/datasets/generated/co2.html" target="_blank">📈 Mauna Loa CO₂ (built into statsmodels)</a>
+        <a class="dataset-link" href="https://data.gov.sg/datasets?query=climate&resultId=d_d11c5ca28f0ffe08d73a2022d22daafc" target="_blank">🇸🇬 Singapore Monthly Temperature (data.gov.sg)</a>
+        <a class="dataset-link" href="https://www.gapminder.org/data/co2-emissions-tonnes-per-person/" target="_blank">🌍 GapMinder CO₂ per capita</a>
+        <a class="dataset-link" href="https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather" target="_blank">⚡ Energy + Weather Dataset (Kaggle)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PRACTICAL 2: MACHINE DOWNTIME
+  ══════════════════════════════════════════════ -->
+  <div class="practical" id="p1">
+    <div class="practical-header">
+      <div>
+        <div class="practical-title">
+          <em>Practical 2 · Classification</em>
+          ⚙️ Predicting Machine Failure &amp; Downtime
+        </div>
+        <div class="tech-list">
+          <span class="tech-pill main">scikit-learn</span>
+          <span class="tech-pill main">RandomForestClassifier</span>
+          <span class="tech-pill">pandas</span>
+          <span class="tech-pill">seaborn</span>
+          <span class="tech-pill">SHAP (optional)</span>
+          <span class="tech-pill">Google Colab</span>
+        </div>
+      </div>
+      <span class="difficulty-badge diff-beginner">⬤ Beginner-Friendly</span>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-amber">
+        <h4>🧭 The Big Picture</h4>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6">Students use the <strong style="color:var(--text)">AI4I 2020 Predictive Maintenance Dataset</strong> (from Kaggle / UCI) — 10,000 synthetic but realistic data points with sensor readings (temperature, torque, tool wear) and a "failure" label. They train a <strong style="color:var(--text)">Random Forest classifier</strong> to predict whether a machine will fail. The sustainability angle: predictive maintenance reduces unplanned shutdowns → less energy wasted on cold restarts → lower emissions and material waste.</p>
+        <div class="callout warn" style="margin-top:12px">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>Important for trainer:</strong> The dataset has a "Target" and a "Failure Type" column. Warn students NOT to use "Failure Type" as a feature when predicting "Target" — this is data leakage. A great teaching moment about ML pitfalls.</div>
+        </div>
+      </div>
+      <div class="info-block accent-amber">
+        <h4>📦 Recommended GitHub Repos</h4>
+        <a class="repo-link" href="https://github.com/AdadAlShabab/Machine-Predictive-Maintenance-Classification" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">AdadAlShabab / Machine-Predictive-Maintenance-Classification</div>
+            <div class="repo-url">github.com/AdadAlShabab/Machine-Predictive-Maintenance-Classification</div>
+          </div>
+          <span class="repo-stars">★ Full Jupyter · Clean</span>
+        </a>
+        <a class="repo-link" href="https://github.com/RushikeshKothawade07/predictive-maintenance-ML" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">RushikeshKothawade07 / predictive-maintenance-ML</div>
+            <div class="repo-url">github.com/RushikeshKothawade07/predictive-maintenance-ML</div>
+          </div>
+          <span class="repo-stars">★ Streamlit App + Colab link</span>
+        </a>
+        <a class="repo-link" href="https://github.com/Samimust/predictive-maintenance" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">Samimust / predictive-maintenance</div>
+            <div class="repo-url">github.com/Samimust/predictive-maintenance</div>
+          </div>
+          <span class="repo-stars">★ EDA + scikit-learn pipeline</span>
+        </a>
+        <div class="callout tip" style="margin-top:8px">
+          <span class="callout-icon">💡</span>
+          <div>The Kaggle dataset link: <strong>shivamb/machine-predictive-maintenance-classification</strong> — 10k rows, clean, no missing values.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-amber">
+        <h4>📋 Step-by-Step Plan (2 hrs)</h4>
+        <ol class="steps">
+          <li><strong>Load &amp; explore (20 min):</strong> Read CSV, show <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">df.describe()</code>, plot correlation heatmap — "which sensor reading most relates to failure?"</li>
+          <li><strong>Prepare features (20 min):</strong> Drop UID and name columns, encode "Type" (L/M/H) with LabelEncoder — 2 lines of code</li>
+          <li><strong>Train-test split (10 min):</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">train_test_split()</code> with 80/20, explain why we hold out test data</li>
+          <li><strong>Fit Random Forest (15 min):</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">RandomForestClassifier(n_estimators=100)</code> — students can try different values</li>
+          <li><strong>Evaluate (25 min):</strong> Confusion matrix, accuracy, precision, recall. Why is recall more important here than precision?</li>
+          <li><strong>Feature importance (15 min):</strong> Plot <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">feature_importances_</code> — which sensor matters most?</li>
+          <li><strong>Discussion (15 min):</strong> Cost of false negatives (missed failure) vs false positives (unnecessary maintenance). Link to ISO 55000 asset management and sustainability KPIs</li>
+        </ol>
+      </div>
+      <div class="info-block accent-amber">
+        <h4>💻 Starter Code Skeleton</h4>
+        <div class="code-block">
+<span class="comment"># STEP 1: Load data</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, ConfusionMatrixDisplay
+
+df = pd.<span class="func">read_csv</span>(<span class="string">'predictive_maintenance.csv'</span>)
+
+<span class="comment"># STEP 2: Prepare features</span>
+df[<span class="string">'Type_enc'</span>] = <span class="func">LabelEncoder</span>().<span class="func">fit_transform</span>(df[<span class="string">'Type'</span>])
+features = [<span class="string">'Type_enc'</span>, <span class="string">'Air temperature [K]'</span>,
+            <span class="string">'Process temperature [K]'</span>, <span class="string">'Rotational speed [rpm]'</span>,
+            <span class="string">'Torque [Nm]'</span>, <span class="string">'Tool wear [min]'</span>]
+X, y = df[features], df[<span class="string">'Target'</span>]
+
+<span class="comment"># STEP 3: Split + Train</span>
+X_train, X_test, y_train, y_test = <span class="func">train_test_split</span>(
+    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>)
+model = <span class="func">RandomForestClassifier</span>(n_estimators=<span class="num">100</span>, random_state=<span class="num">42</span>)
+model.<span class="func">fit</span>(X_train, y_train)
+
+<span class="comment"># STEP 4: Evaluate</span>
+<span class="func">print</span>(<span class="func">classification_report</span>(y_test, model.<span class="func">predict</span>(X_test)))
+<span class="func">ConfusionMatrixDisplay</span>.<span class="func">from_estimator</span>(model, X_test, y_test)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block full accent-amber">
+      <h4>🎯 Learning Outcomes</h4>
+      <ul class="outcomes">
+        <li>Load and pre-process a tabular industrial sensor dataset</li>
+        <li>Build and train a Random Forest binary classifier using scikit-learn</li>
+        <li>Interpret a confusion matrix and distinguish precision vs recall in a sustainability / safety context</li>
+        <li>Identify which sensor features drive failure — linking ML output to engineering decision-making</li>
+        <li>Discuss trade-offs: cost of over-maintenance vs unplanned shutdown in a water treatment or waste plant context</li>
+      </ul>
+      <hr class="section-divider">
+      <h4>📊 Dataset</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+        <a class="dataset-link" href="https://www.kaggle.com/datasets/shivamb/machine-predictive-maintenance-classification" target="_blank">🔧 AI4I 2020 Predictive Maintenance (Kaggle, 10k rows, no login needed via direct download)</a>
+        <a class="dataset-link" href="https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset" target="_blank">🎓 UCI ML Repository mirror</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PRACTICAL 3: ESG RANKING
+  ══════════════════════════════════════════════ -->
+  <div class="practical" id="p2">
+    <div class="practical-header">
+      <div>
+        <div class="practical-title">
+          <em>Practical 3 · Regression + Ranking</em>
+          🏢 Predicting &amp; Ranking Company ESG Performance
+        </div>
+        <div class="tech-list">
+          <span class="tech-pill main">scikit-learn</span>
+          <span class="tech-pill main">GradientBoosting / RandomForest</span>
+          <span class="tech-pill">pandas</span>
+          <span class="tech-pill">plotly / matplotlib</span>
+          <span class="tech-pill">Google Colab</span>
+        </div>
+      </div>
+      <span class="difficulty-badge diff-intermediate">◆ Intermediate</span>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-blue">
+        <h4>🧭 The Big Picture</h4>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6">Students work with a structured ESG dataset (company financials + sustainability metrics → ESG score) and train a <strong style="color:var(--text)">regression model</strong> to predict E, S, and G sub-scores. Then they produce a <strong style="color:var(--text)">ranked leaderboard</strong> of companies sorted by predicted ESG performance. The ML adds value here by revealing <em>which features drive the score</em> — something rating agencies don't disclose. Great for linking to Singapore's SGX sustainability reporting mandate.</p>
+        <div class="callout tip" style="margin-top:12px">
+          <span class="callout-icon">💡</span>
+          <div>Use the <strong>yesg Python library</strong> (pip install yesg) to pull live ESG scores for Singapore-listed companies (SGX) directly in Colab — real data, zero cost.</div>
+        </div>
+      </div>
+      <div class="info-block accent-blue">
+        <h4>📦 Recommended GitHub Repos</h4>
+        <a class="repo-link" href="https://github.com/teckyonAI/ESG_Score_Prediction" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">teckyonAI / ESG_Score_Prediction</div>
+            <div class="repo-url">github.com/teckyonAI/ESG_Score_Prediction</div>
+          </div>
+          <span class="repo-stars">★ Jupyter · Linear + RF + GBM</span>
+        </a>
+        <a class="repo-link" href="https://github.com/arif9799/HFST-ESG-Analysis" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">arif9799 / HFST-ESG-Analysis</div>
+            <div class="repo-url">github.com/arif9799/HFST-ESG-Analysis</div>
+          </div>
+          <span class="repo-stars">★ Live data · Streamlit viz</span>
+        </a>
+        <a class="repo-link" href="https://github.com/nikwilms/ESG-Score-Prediction-from-Sustainability-Reports" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">nikwilms / ESG-Score-Prediction</div>
+            <div class="repo-url">github.com/nikwilms/ESG-Score-Prediction-from-Sustainability-Reports</div>
+          </div>
+          <span class="repo-stars">★ NLP + ML · Advanced</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-blue">
+        <h4>📋 Step-by-Step Plan (2 hrs)</h4>
+        <ol class="steps">
+          <li><strong>Context (15 min):</strong> Show SGX sustainability reporting mandate, explain E/S/G breakdown, what scores mean (0–100), and why they differ across rating agencies</li>
+          <li><strong>Load &amp; explore (20 min):</strong> Read ESG dataset (trainer-provided CSV), plot histogram of E, S, G scores — are companies normally distributed?</li>
+          <li><strong>Feature selection (15 min):</strong> Which columns to use? Revenue, sector, carbon intensity, board diversity — students discuss before selecting</li>
+          <li><strong>Regression model (20 min):</strong> Fit <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">GradientBoostingRegressor</code> to predict E score, evaluate with R² and MAE</li>
+          <li><strong>Feature importance (15 min):</strong> What drives a high Environmental score? Plot importance chart — connect to real-world GHG disclosures</li>
+          <li><strong>Rank companies (15 min):</strong> Use predicted scores to rank top 10 and bottom 10 — produce a leaderboard table</li>
+          <li><strong>Discussion (20 min):</strong> Can ML-predicted ESG scores be used for investment decisions? What are the limitations? Link to TCFD, ISSB, Singapore Green Finance agenda</li>
+        </ol>
+      </div>
+      <div class="info-block accent-blue">
+        <h4>💻 Starter Code Skeleton</h4>
+        <div class="code-block">
+<span class="comment"># STEP 1: Load dataset</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_absolute_error
+
+df = pd.<span class="func">read_csv</span>(<span class="string">'esg_dataset.xlsx'</span>)
+
+<span class="comment"># STEP 2: Select features & target (E score)</span>
+features = [<span class="string">'Revenue_USD'</span>, <span class="string">'Carbon_Intensity'</span>,
+            <span class="string">'Energy_Renewable_Pct'</span>, <span class="string">'Waste_Recycled_Pct'</span>]
+X = df[features]
+y = df[<span class="string">'Environmental_Score'</span>]
+
+<span class="comment"># STEP 3: Train model</span>
+X_tr, X_te, y_tr, y_te = <span class="func">train_test_split</span>(
+    X, y, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>)
+model = <span class="func">GradientBoostingRegressor</span>().<span class="func">fit</span>(X_tr, y_tr)
+
+<span class="comment"># STEP 4: Evaluate + rank</span>
+y_pred = model.<span class="func">predict</span>(X_te)
+<span class="func">print</span>(<span class="string">f"R² = {r2_score(y_te, y_pred):.3f}"</span>)
+df[<span class="string">'Predicted_E'</span>] = model.<span class="func">predict</span>(X)
+leaderboard = df.<span class="func">sort_values</span>(<span class="string">'Predicted_E'</span>, ascending=<span class="num">False</span>)
+<span class="func">print</span>(leaderboard[[<span class="string">'Company'</span>, <span class="string">'Predicted_E'</span>]].<span class="func">head</span>(<span class="num">10</span>))
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block full accent-blue">
+      <h4>🎯 Learning Outcomes</h4>
+      <ul class="outcomes">
+        <li>Load and clean a structured ESG dataset and identify key sustainability KPI features</li>
+        <li>Train a regression model to predict an E, S, or G sub-score and evaluate model accuracy</li>
+        <li>Generate and interpret a company ranking / leaderboard from ML-predicted ESG scores</li>
+        <li>Identify which financial and operational metrics most strongly predict ESG performance</li>
+        <li>Discuss the limitations of ML-generated ESG ratings vs certified agency ratings (MSCI, Sustainalytics)</li>
+      </ul>
+      <hr class="section-divider">
+      <h4>📊 Datasets</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+        <a class="dataset-link" href="https://github.com/teckyonAI/ESG_Score_Prediction" target="_blank">📊 ESG dataset bundled in teckyonAI repo (datset.xlsx)</a>
+        <a class="dataset-link" href="https://pypi.org/project/yesg/" target="_blank">📡 yesg library — live Yahoo Finance ESG data</a>
+        <a class="dataset-link" href="https://www.kaggle.com/datasets/alistairking/esg-scores" target="_blank">🏆 Kaggle ESG Scores Dataset (S&P 500)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PRACTICAL 4: LOGISTICS
+  ══════════════════════════════════════════════ -->
+  <div class="practical" id="p3">
+    <div class="practical-header">
+      <div>
+        <div class="practical-title">
+          <em>Practical 4 · Clustering + Route Optimisation</em>
+          🚚 Reducing Delivery Carbon via Smart Routing
+        </div>
+        <div class="tech-list">
+          <span class="tech-pill main">scikit-learn KMeans</span>
+          <span class="tech-pill main">Google OR-Tools</span>
+          <span class="tech-pill">pandas</span>
+          <span class="tech-pill">matplotlib / folium</span>
+          <span class="tech-pill">Google Colab</span>
+        </div>
+      </div>
+      <span class="difficulty-badge diff-intermediate">◆ Intermediate</span>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-coral">
+        <h4>🧭 The Big Picture</h4>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6">Students simulate a <strong style="color:var(--text)">Singapore food waste collection scenario</strong>: 30 hawker centres need daily bin collection by 3 trucks. Using <strong style="color:var(--text)">K-Means clustering</strong> they group nearby locations into 3 zones (one per truck), then apply a simple <strong style="color:var(--text)">Travelling Salesman / VRP solver</strong> (Google OR-Tools) within each cluster to minimise route distance. Carbon emissions are then estimated using distance × emission factor. Before vs after comparison demonstrates real-world impact.</p>
+        <div class="callout tip" style="margin-top:12px">
+          <span class="callout-icon">💡</span>
+          <div>Use <strong>Singapore hawker centre location data</strong> from data.gov.sg (lat/long coordinates — freely available, no API key) as the delivery points.</div>
+        </div>
+      </div>
+      <div class="info-block accent-coral">
+        <h4>📦 Recommended GitHub Repos</h4>
+        <a class="repo-link" href="https://github.com/Khixinhxan/vrp_ortools_python" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">Khixinhxan / vrp_ortools_python</div>
+            <div class="repo-url">github.com/Khixinhxan/vrp_ortools_python</div>
+          </div>
+          <span class="repo-stars">★ OR-Tools VRP · Clean Python</span>
+        </a>
+        <a class="repo-link" href="https://github.com/kayne87/a2a-challenge" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">kayne87 / a2a-challenge</div>
+            <div class="repo-url">github.com/kayne87/a2a-challenge</div>
+          </div>
+          <span class="repo-stars">★ KMeans + TSP · Waste Bins!</span>
+        </a>
+        <div class="callout warn" style="margin-top:8px">
+          <span class="callout-icon">⚠️</span>
+          <div>OR-Tools installs in Colab with one line: <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">!pip install ortools</code>. Takes ~30 seconds. No other dependencies needed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-coral">
+        <h4>📋 Step-by-Step Plan (2.5 hrs)</h4>
+        <ol class="steps">
+          <li><strong>Context &amp; map (20 min):</strong> Load hawker centre coordinates from data.gov.sg, plot on scatter plot (lat vs long). Ask: "How would you manually assign 3 trucks?"</li>
+          <li><strong>K-Means clustering (25 min):</strong> Apply <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">KMeans(n_clusters=3)</code> — each cluster = one truck zone. Visualise clusters by colour on map</li>
+          <li><strong>Distance matrix (20 min):</strong> Use scipy's <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">pdist / squareform</code> to calculate distances between all points in each cluster</li>
+          <li><strong>OR-Tools routing solver (30 min):</strong> Use trainer-provided boilerplate (10 lines) — students only change number of nodes and vehicles. Run solver, print optimised route</li>
+          <li><strong>Carbon calculation (20 min):</strong> Total km × emission factor (kg CO₂/km for diesel truck) → compare random route vs optimised route</li>
+          <li><strong>Visualise routes (15 min):</strong> Plot route lines on matplotlib. Optional: use <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">folium</code> for interactive map</li>
+          <li><strong>Discussion (20 min):</strong> How does NEA's food waste collection actually work? What else could be optimised — time windows, bin fill levels (IoT sensor integration)?</li>
+        </ol>
+      </div>
+      <div class="info-block accent-coral">
+        <h4>💻 Starter Code Skeleton</h4>
+        <div class="code-block">
+<span class="comment"># STEP 1: Load hawker data</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+
+df = pd.<span class="func">read_csv</span>(<span class="string">'hawker_centres.csv'</span>)
+coords = df[[<span class="string">'latitude'</span>, <span class="string">'longitude'</span>]].<span class="func">values</span>
+
+<span class="comment"># STEP 2: Cluster into 3 truck zones</span>
+kmeans = <span class="func">KMeans</span>(n_clusters=<span class="num">3</span>, random_state=<span class="num">42</span>)
+df[<span class="string">'zone'</span>] = kmeans.<span class="func">fit_predict</span>(coords)
+
+<span class="comment"># STEP 3: Visualise</span>
+colors = [<span class="string">'#ff6b6b'</span>, <span class="string">'#3dffa0'</span>, <span class="string">'#5bc4ff'</span>]
+<span class="keyword">for</span> z <span class="keyword">in</span> <span class="func">range</span>(<span class="num">3</span>):
+    sub = df[df[<span class="string">'zone'</span>] == z]
+    plt.<span class="func">scatter</span>(sub[<span class="string">'longitude'</span>], sub[<span class="string">'latitude'</span>],
+                c=colors[z], label=<span class="string">f'Truck {z+1}'</span>)
+plt.<span class="func">legend</span>(); plt.<span class="func">show</span>()
+
+<span class="comment"># STEP 4: Estimate carbon savings</span>
+random_km_per_day = <span class="num">150</span>
+optimised_km_per_day = <span class="num">95</span>  <span class="comment"># from solver output</span>
+ef = <span class="num">0.27</span>  <span class="comment"># kg CO2 per km (NEA diesel truck factor)</span>
+saving = (random_km_per_day - optimised_km_per_day) * ef
+<span class="func">print</span>(<span class="string">f"Daily CO₂ saved: {saving:.1f} kg = {saving*365/1000:.1f} tCO₂/year"</span>)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block full accent-coral">
+      <h4>🎯 Learning Outcomes</h4>
+      <ul class="outcomes">
+        <li>Apply K-Means clustering to group geographic locations into service zones</li>
+        <li>Use Google OR-Tools to solve a simplified Vehicle Routing Problem and minimise total travel distance</li>
+        <li>Calculate and compare CO₂ emissions for baseline vs optimised routes using emission factors</li>
+        <li>Interpret the ML output (cluster assignments, route order) in a logistics operations context</li>
+        <li>Discuss extensions: bin fill-level IoT sensors, time windows, multi-depot routing, real-time re-routing</li>
+      </ul>
+      <hr class="section-divider">
+      <h4>📊 Datasets</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+        <a class="dataset-link" href="https://data.gov.sg/datasets?query=hawker" target="_blank">🇸🇬 Singapore Hawker Centre Locations (data.gov.sg)</a>
+        <a class="dataset-link" href="https://developers.google.com/optimization/routing/vrp" target="_blank">🔧 Google OR-Tools VRP Documentation + Tutorial</a>
+        <a class="dataset-link" href="https://github.com/kayne87/a2a-challenge" target="_blank">🗑️ Real waste bin dataset (Milan) — same concept</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       PRACTICAL 5: WASTE SORTING
+  ══════════════════════════════════════════════ -->
+  <div class="practical" id="p4">
+    <div class="practical-header">
+      <div>
+        <div class="practical-title">
+          <em>Practical 5 · Image Classification (CNN)</em>
+          ♻️ Automated Waste Sorting for Recycling
+        </div>
+        <div class="tech-list">
+          <span class="tech-pill main">TensorFlow / Keras</span>
+          <span class="tech-pill main">MobileNetV2 (transfer learning)</span>
+          <span class="tech-pill">TrashNet dataset</span>
+          <span class="tech-pill">matplotlib</span>
+          <span class="tech-pill">Google Colab GPU</span>
+        </div>
+      </div>
+      <span class="difficulty-badge diff-intermediate">◆ Intermediate</span>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-purple">
+        <h4>🧭 The Big Picture</h4>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6">Students classify waste images (cardboard, glass, metal, paper, plastic, trash) using the <strong style="color:var(--text)">TrashNet dataset</strong> — a Stanford dataset of 2,527 labelled photos. Rather than building a CNN from scratch (too complex), students use <strong style="color:var(--text)">MobileNetV2 transfer learning</strong> — a pre-trained model that requires only a few lines to fine-tune. Training takes ~10 minutes on Colab GPU (free tier). The result: a working AI that can classify a photo of waste into its recycling category.</p>
+        <div class="callout tip" style="margin-top:12px">
+          <span class="callout-icon">💡</span>
+          <div>Alternate simpler version: use the <strong>Organic vs Recyclable</strong> Kaggle dataset (binary classification, 22,000 images) — even easier to train with 94% accuracy. Great for first-timers with image data.</div>
+        </div>
+      </div>
+      <div class="info-block accent-purple">
+        <h4>📦 Recommended GitHub Repos</h4>
+        <a class="repo-link" href="https://github.com/kemalkilicaslan/Garbage-Classification-with-Convolutional-Neural-Network-CNN" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">kemalkilicaslan / Garbage-Classification-CNN</div>
+            <div class="repo-url">github.com/kemalkilicaslan/Garbage-Classification-with-CNN</div>
+          </div>
+          <span class="repo-stars">★ TrashNet · Full Jupyter · 6-class</span>
+        </a>
+        <a class="repo-link" href="https://github.com/manuelamc14/waste-classification-model" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">manuelamc14 / waste-classification-model</div>
+            <div class="repo-url">github.com/manuelamc14/waste-classification-model</div>
+          </div>
+          <span class="repo-stars">★ VGG16 + Flask app · Organic/Recycled</span>
+        </a>
+        <a class="repo-link" href="https://github.com/CrypticNumbers8/Waste-Classification-using-Keras-and-CNN" target="_blank">
+          <span class="repo-icon">🐙</span>
+          <div class="repo-info">
+            <div class="repo-name">CrypticNumbers8 / Waste-Classification-Keras-CNN</div>
+            <div class="repo-url">github.com/CrypticNumbers8/Waste-Classification-using-Keras-and-CNN</div>
+          </div>
+          <span class="repo-stars">★ Simplest · Binary · Beginner</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="info-block accent-purple">
+        <h4>📋 Step-by-Step Plan (2.5 hrs)</h4>
+        <ol class="steps">
+          <li><strong>Setup Colab GPU (10 min):</strong> Runtime → Change runtime type → T4 GPU. Install nothing — TensorFlow pre-installed in Colab</li>
+          <li><strong>Download dataset (15 min):</strong> Use Kaggle API in Colab (trainer provides credential-free link) OR use pre-hosted zip — 2,527 images, ~700 MB</li>
+          <li><strong>Explore images (20 min):</strong> Display a grid of sample images from each class. Discuss: what features distinguish cardboard from paper? Glass from plastic?</li>
+          <li><strong>Load with ImageDataGenerator (20 min):</strong> 3 lines to flow images from folder with 80/20 split and auto-resizing to 224×224</li>
+          <li><strong>Load MobileNetV2 base (15 min):</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">include_top=False</code>, freeze base layers, add 2 custom dense layers — 5 lines total</li>
+          <li><strong>Train (25 min):</strong> <code style="font-family:var(--mono);font-size:11px;color:var(--amber)">model.fit()</code> for 10 epochs — watch accuracy improve in real time. Students discuss: what is an epoch?</li>
+          <li><strong>Test on real photos (20 min):</strong> Students photograph their own bin contents with phone, upload to Colab, get prediction — immediate tangible result</li>
+          <li><strong>Discussion (25 min):</strong> How does Semakau use CV in sorting? What's the accuracy needed for industrial deployment? Link to SembWaste and NEA's zero-waste goals</li>
+        </ol>
+      </div>
+      <div class="info-block accent-purple">
+        <h4>💻 Starter Code Skeleton</h4>
+        <div class="code-block">
+<span class="comment"># STEP 1: Load MobileNetV2 (transfer learning)</span>
+<span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf
+<span class="keyword">from</span> tensorflow.keras.applications <span class="keyword">import</span> MobileNetV2
+<span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers, models
+<span class="keyword">from</span> tensorflow.keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator
+
+<span class="comment"># Load pre-trained base (no top layer)</span>
+base = <span class="func">MobileNetV2</span>(weights=<span class="string">'imagenet'</span>, include_top=<span class="num">False</span>,
+                    input_shape=(<span class="num">224</span>, <span class="num">224</span>, <span class="num">3</span>))
+base.trainable = <span class="num">False</span>  <span class="comment"># freeze base weights</span>
+
+<span class="comment"># Add our custom classification head</span>
+model = models.<span class="func">Sequential</span>([
+    base,
+    layers.<span class="func">GlobalAveragePooling2D</span>(),
+    layers.<span class="func">Dense</span>(<span class="num">128</span>, activation=<span class="string">'relu'</span>),
+    layers.<span class="func">Dense</span>(<span class="num">6</span>, activation=<span class="string">'softmax'</span>)  <span class="comment"># 6 waste classes</span>
+])
+model.<span class="func">compile</span>(optimizer=<span class="string">'adam'</span>,
+              loss=<span class="string">'categorical_crossentropy'</span>,
+              metrics=[<span class="string">'accuracy'</span>])
+
+<span class="comment"># STEP 2: Load images from folder</span>
+gen = <span class="func">ImageDataGenerator</span>(rescale=<span class="num">1</span>/<span class="num">255</span>, validation_split=<span class="num">0.2</span>)
+train_data = gen.<span class="func">flow_from_directory</span>(
+    <span class="string">'dataset/'</span>, target_size=(<span class="num">224</span>,<span class="num">224</span>),
+    subset=<span class="string">'training'</span>, batch_size=<span class="num">32</span>)
+
+<span class="comment"># STEP 3: Train</span>
+history = model.<span class="func">fit</span>(train_data, epochs=<span class="num">10</span>)
+        </div>
+      </div>
+    </div>
+
+    <div class="info-block full accent-purple">
+      <h4>🎯 Learning Outcomes</h4>
+      <ul class="outcomes">
+        <li>Load and visualise an image dataset organised into class folders using Keras ImageDataGenerator</li>
+        <li>Apply MobileNetV2 transfer learning to classify waste images without training a CNN from scratch</li>
+        <li>Interpret training accuracy curves and identify overfitting behaviour</li>
+        <li>Test the trained model on new, unseen images (including students' own photographs) and discuss confidence scores</li>
+        <li>Connect AI-based waste sorting to real-world applications: automated sorting conveyors, smart bins, Semakau Landfill gate inspection</li>
+      </ul>
+      <hr class="section-divider">
+      <h4>📊 Datasets</h4>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
+        <a class="dataset-link" href="https://github.com/garythung/trashnet" target="_blank">🗑️ TrashNet (Stanford) — 2,527 images, 6 classes (GitHub)</a>
+        <a class="dataset-link" href="https://www.kaggle.com/datasets/techsash/waste-classification-data" target="_blank">♻️ Waste Classification Data (Kaggle) — 22,500 images, Organic/Recycled</a>
+        <a class="dataset-link" href="https://www.kaggle.com/datasets/mostafaabla/garbage-classification" target="_blank">🏷️ 12-class garbage dataset (Kaggle) — Advanced option</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Singapore Polytechnic · School of Chemical &amp; Life Sciences · <span>PACE CET Programme</span></p>
+    <p>All repos verified April 2026 · <span>Run all practicals in Google Colab — zero local setup</span></p>
+  </footer>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const practicals = document.querySelectorAll('.practical');
+  const ovCards = document.querySelectorAll('.overview-card');
+
+  function switchTab(i) {
+    tabs.forEach((t, idx) => t.classList.toggle('active', idx === i));
+    practicals.forEach((p, idx) => p.classList.toggle('active', idx === i));
+    ovCards.forEach((c, idx) => c.classList.toggle('active', idx === i));
+    window.scrollTo({ top: document.getElementById('overviewGrid').offsetTop - 20, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
